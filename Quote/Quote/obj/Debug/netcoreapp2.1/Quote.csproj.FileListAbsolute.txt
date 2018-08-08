@@ -1,0 +1,11 @@
+C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.csprojAssemblyReference.cache
+C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.csproj.CoreCompileInputs.cache
+C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.AssemblyInfoInputs.cache
+C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.AssemblyInfo.cs
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\Quote.deps.json
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\Quote.runtimeconfig.json
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\Quote.runtimeconfig.dev.json
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\Quote.dll
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\Quote.pdb
+C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.dll
+C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.pdb

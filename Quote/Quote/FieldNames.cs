@@ -7,33 +7,38 @@ namespace Quote
 {
     public class FieldNames
     {
-        public List<Results> result { get; set; }
-
-  
-
+        [JsonProperty("Result")]
+        public List<Results> Result { get; set; }
     }
 
     public class Results
     {
+        [JsonProperty("worksheets")]
         public List<WorkSheets> worksheets { get; set; }
     }
 
     public class WorkSheets
     {
+        [JsonProperty("name")]
         public string name { get; set; }
+
+        [JsonProperty("xlsheet")]
+        public xlsheet xlsheet { get; set; }
+
+    }
+
+    public class xlsheet
+    {
+        [JsonProperty("columns")]
         public List<Columns> columns { get; set; }
     }
 
     public class Columns
     {
+        [JsonProperty("name")]
         public string name { get; set; }
-        public Rows rows { get; set; }
-    }
 
-    public class Rows
-    {
-        public string make { get; set; }
-        public string model { get; set; }
-
+        [JsonProperty("rows")]
+        public List<string> rows { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using Prism.Events;
+using Moq;
+using IronBridge.Data.Contract;
+using IronBridge.Data.Repository;
+using IronBridge.Data.Operation.Generic;
 
 namespace Quote
 {
@@ -35,11 +37,11 @@ namespace Quote
               {
                 ""name"": ""A"",
                 ""rows"": [
-                  ""make"",
-                  ""Fluke"",
-                  ""Tektronix"",
-                  ""Boonton"",
-                  ""Draper""
+                  ""test_1-8-18_10.04"",
+                  ""f7ayful4cm"",
+                  ""jqrfuh3bx8"",
+                  ""6i1u0mvbn"",
+                  ""8d3bonf8cr""
                 ]
     },
               {
@@ -136,24 +138,60 @@ namespace Quote
     }
   ]
 }";
-            //   ReadObjectDataAsync().Wait();
-            fileParser("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64, SGVsbG8gV29ybGQ=", jsonTest);
-            string s = "";
+            FileParserAsync("", jsonTest);
         }
-
-        public void fileParser(string base64EncodedData, string jsonTest)
+        public void FileParserAsync(string base64EncodedData, string jsonTest)
         {
+            IEventAggregator eventAggregator = new EventAggregator();
+            S3EnvironmentConfiguration config = new S3EnvironmentConfiguration("v8");
+          
+            ISearch whooshSearch = new WhooshSearch(config);
+            DynamoPersistentStorage dynamoPersistentStorage = new DynamoPersistentStorage(config);
+            IEntityDefinitionRepository s3EntityDefinitionRepository = new S3EntityDefinitionRepository(config);
+
+            IRepository cache = new RedisCacheRepository(config);
+            IDataManagement data = new DataManagement(cache, dynamoPersistentStorage);
+            IGuidGeneration guidGenerator = new GuidGenerator(dynamoPersistentStorage);
+            
             JObject jsonObj = JObject.Parse(jsonTest);
+
+            NestedToFlatStorage nestedToFlatStorage = new NestedToFlatStorage(data, s3EntityDefinitionRepository, guidGenerator, whooshSearch, eventAggregator);
+         //   DataOperation dataOperation = new DataOperation(storage);
+            
+
             var quoting = JsonConvert.DeserializeObject<FieldNames>(jsonTest);
+            QuoteLine quoteLine;
 
             foreach (var sheet in quoting.Result[0].worksheets)
             {
-                Console.WriteLine(sheet.name);
+                //  Console.WriteLine(sheet.name);
                 foreach (var columns in sheet.xlsheet.columns)
                 {
-                    Console.WriteLine(columns.name);
+                    //  Console.WriteLine(columns.name);
                     foreach (var rows in columns.rows)
                     {
+                        //          Task<string> guid = generator.NewGuid("quoteline");
+                        //            string id = guid.Result;
+                           var dynamoData = nestedToFlatStorage.SearchAnyString("company", rows, 0, 15);
+                     //   JObject test = JObject.Parse(rows);
+                    //   dataOperation.SearchAnyString
+                     //   var dynamoData = dynamo.ScanIds("company", test, 0, 15);
+                        for (var i = 0; i < 2; i++)
+                        {
+                            if (dynamoData.HasValues)
+                            {
+                              //  quoteLine = JsonConvert.DeserializeObject<QuoteLine>(dynamoData.Result.ToString());
+                              
+                                //      quoteLine. = "";
+                               
+                            //       await dynamo.Save("quoteline", id, JObject.FromObject(quoteLine));
+                                //  test.Result.Name;
+                                continue;
+                            }
+
+                            i = 0;
+                        }
+
                         Console.WriteLine(rows);
                     }
                 }

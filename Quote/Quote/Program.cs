@@ -6,11 +6,15 @@ using Moq;
 using IronBridge.Data.Contract;
 using IronBridge.Data.Repository;
 using IronBridge.Data.Operation.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Quote
 {
     class Program
     {
+        private static readonly HttpClient client = new HttpClient();
         static void Main(string[] args)
         {
             Program test = new Program();
@@ -37,7 +41,7 @@ namespace Quote
               {
                 ""name"": ""A"",
                 ""rows"": [
-                  ""test_1-8-18_10.04"",
+                  ""Winnersh"",
                   ""f7ayful4cm"",
                   ""jqrfuh3bx8"",
                   ""6i1u0mvbn"",
@@ -138,54 +142,54 @@ namespace Quote
     }
   ]
 }";
-            FileParserAsync("", jsonTest);
+            FileParser("", jsonTest);
         }
-        public void FileParserAsync(string base64EncodedData, string jsonTest)
+        public void FileParser(string base64EncodedData, string jsonTest)
         {
-            IEventAggregator eventAggregator = new EventAggregator();
-            S3EnvironmentConfiguration config = new S3EnvironmentConfiguration("v8");
-          
-            ISearch whooshSearch = new WhooshSearch(config);
-            DynamoPersistentStorage dynamoPersistentStorage = new DynamoPersistentStorage(config);
-            IEntityDefinitionRepository s3EntityDefinitionRepository = new S3EntityDefinitionRepository(config);
-
-            IRepository cache = new RedisCacheRepository(config);
-            IDataManagement data = new DataManagement(cache, dynamoPersistentStorage);
-            IGuidGeneration guidGenerator = new GuidGenerator(dynamoPersistentStorage);
-            
-            JObject jsonObj = JObject.Parse(jsonTest);
-
-            NestedToFlatStorage nestedToFlatStorage = new NestedToFlatStorage(data, s3EntityDefinitionRepository, guidGenerator, whooshSearch, eventAggregator);
-         //   DataOperation dataOperation = new DataOperation(storage);
-            
-
-            var quoting = JsonConvert.DeserializeObject<FieldNames>(jsonTest);
             QuoteLine quoteLine;
+            JObject parsedResults;
+            JObject jsonObj = JObject.Parse(jsonTest);
+            FieldNames quoting;
+            string result;
+            Task<string> responseString;
+            int parseCounter;
+            Dictionary<string, string> test;
+            Quote quote;
 
+            quoting = JsonConvert.DeserializeObject<FieldNames>(jsonTest);
             foreach (var sheet in quoting.Result[0].worksheets)
             {
                 //  Console.WriteLine(sheet.name);
                 foreach (var columns in sheet.xlsheet.columns)
                 {
-                    //  Console.WriteLine(columns.name);
                     foreach (var rows in columns.rows)
                     {
-                        //          Task<string> guid = generator.NewGuid("quoteline");
-                        //            string id = guid.Result;
-                           var dynamoData = nestedToFlatStorage.SearchAnyString("company", rows, 0, 15);
-                     //   JObject test = JObject.Parse(rows);
-                    //   dataOperation.SearchAnyString
-                     //   var dynamoData = dynamo.ScanIds("company", test, 0, 15);
+                        responseString = client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8/search/category:company AND " + rows);
                         for (var i = 0; i < 2; i++)
                         {
-                            if (dynamoData.HasValues)
+                            if (responseString.IsCompleted)
                             {
-                              //  quoteLine = JsonConvert.DeserializeObject<QuoteLine>(dynamoData.Result.ToString());
-                              
-                                //      quoteLine. = "";
-                               
-                            //       await dynamo.Save("quoteline", id, JObject.FromObject(quoteLine));
-                                //  test.Result.Name;
+                                result = responseString.Result;
+                           //     test = test.Add(result);
+                                parsedResults = JObject.Parse(result);
+                           //     test = JsonConvert.DeserializeObject<Dictionary<string, Results>>(result);
+                                quoteLine = JsonConvert.DeserializeObject<QuoteLine>(parsedResults.ToString());
+                                parseCounter = quoteLine.Result.Count;
+
+                                // SAFE GUARD IF IT RETURNS NO RESLUTS.
+                                if (parseCounter == 0) continue;
+
+                                if (parseCounter == 1)
+                                {
+                                    //EXACT MATCH
+                                    quoteLine.quote.SerialNumber = quoteLine.Result[i].Name_S;
+                                }
+                                else if (parseCounter > 1)
+                                {
+                                    //CONFLICT.
+                                }
+
+                                //       await dynamo.Save("quoteline", id, JObject.FromObject(quoteLine));
                                 continue;
                             }
 

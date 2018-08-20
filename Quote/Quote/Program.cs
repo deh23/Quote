@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using Newtonsoft.Json;
-using Prism.Events;
-using Moq;
-using IronBridge.Data.Contract;
-using IronBridge.Data.Repository;
-using IronBridge.Data.Operation.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -18,9 +13,9 @@ namespace Quote
         static void Main(string[] args)
         {
             Program test = new Program();
-            test.DeansTest();
+            test.DeansTest().Wait();
         }
-        public void DeansTest()
+        public async Task DeansTest()
         {
             var jsonTest = @"{
   ""note"": ""This is a test sample JSON return for the quote mapping : CALIBRE - 285"",
@@ -142,16 +137,16 @@ namespace Quote
     }
   ]
 }";
-            FileParser("", jsonTest);
+            await FileParser("", jsonTest);
         }
-        public void FileParser(string base64EncodedData, string jsonTest)
+        public async Task FileParser(string base64EncodedData, string jsonTest)
         {
             QuoteLine quoteLine;
-            JObject parsedResults;
+            JToken parsedResults;
             JObject jsonObj = JObject.Parse(jsonTest);
             FieldNames quoting;
             string result;
-            Task<string> responseString;
+            string responseString;
             int parseCounter;
             Dictionary<string, string> test;
             Quote quote;
@@ -164,43 +159,39 @@ namespace Quote
                 {
                     foreach (var rows in columns.rows)
                     {
-                        responseString = client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8/search/category:company AND " + rows);
-                        for (var i = 0; i < 2; i++)
+                        //responseString = await client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8/search/category:product AND " + rows);
+                        responseString = await client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8//search/category:product AND f");
+
+                        result = responseString;
+                        //     test = test.Add(result);
+                        if (!JObject.Parse(result).TryGetValue("Result", out parsedResults))                        
+                            return;
+
+                        if (!parsedResults.HasValues) continue; 
+                        //     test = JsonConvert.DeserializeObject<Dictionary<string, Results>>(result);
+                        quoteLine = JsonConvert.DeserializeObject<QuoteLine>(parsedResults.ToString());
+                        parseCounter = quoteLine.Result.Count;
+
+                        // SAFE GUARD IF IT RETURNS NO RESLUTS.
+                        
+                        switch(parseCounter)
                         {
-                            if (responseString.IsCompleted)
-                            {
-                                result = responseString.Result;
-                           //     test = test.Add(result);
-                                parsedResults = JObject.Parse(result);
-                           //     test = JsonConvert.DeserializeObject<Dictionary<string, Results>>(result);
-                                quoteLine = JsonConvert.DeserializeObject<QuoteLine>(parsedResults.ToString());
-                                parseCounter = quoteLine.Result.Count;
+                            case 1:
 
-                                // SAFE GUARD IF IT RETURNS NO RESLUTS.
-                                if (parseCounter == 0) continue;
-
-                                if (parseCounter == 1)
-                                {
-                                    //EXACT MATCH
-                                    quoteLine.quote.SerialNumber = quoteLine.Result[i].Name_S;
-                                }
-                                else if (parseCounter > 1)
-                                {
-                                    //CONFLICT.
-                                }
-
-                                //       await dynamo.Save("quoteline", id, JObject.FromObject(quoteLine));
-                                continue;
-                            }
-
-                            i = 0;
+                                quoteLine.quote.SerialNumber = quoteLine.Result[0].Name_S;
+                                break;
+                            default:
+                                
+                                throw new Exception();
                         }
-
-                        Console.WriteLine(rows);
+             
                     }
+                    //return Ok();
+                    //       await dynamo.Save("quoteline", id, JObject.FromObject(quoteLine));
+
                 }
             }
-            Console.ReadLine();
         }
     }
 }
+    

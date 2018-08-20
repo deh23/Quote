@@ -2549,6 +2549,8 @@
       "path": "newtonsoft.json/11.0.2",
       "files": [
         "LICENSE.md",
+        "Newtonsoft.Json.11.0.2.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
@@ -2566,9 +2568,7 @@
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.11.0.2.nupkg.sha512",
-        "newtonsoft.json.nuspec"
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -6337,23 +6337,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\deaharri\\.nuget\\packages\\": {},
+    "C:\\Users\\Dean\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\deaharri\\source\\repos\\Quote\\Quote\\Quote.csproj",
+      "projectUniqueName": "C:\\Users\\Dean\\Documents\\Visual Studio 2017\\Projects\\Quote-master\\Quote\\Quote\\Quote.csproj",
       "projectName": "Quote",
-      "projectPath": "C:\\Users\\deaharri\\source\\repos\\Quote\\Quote\\Quote.csproj",
-      "packagesPath": "C:\\Users\\deaharri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\deaharri\\source\\repos\\Quote\\Quote\\obj\\",
+      "projectPath": "C:\\Users\\Dean\\Documents\\Visual Studio 2017\\Projects\\Quote-master\\Quote\\Quote\\Quote.csproj",
+      "packagesPath": "C:\\Users\\Dean\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Dean\\Documents\\Visual Studio 2017\\Projects\\Quote-master\\Quote\\Quote\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\deaharri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Dean\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

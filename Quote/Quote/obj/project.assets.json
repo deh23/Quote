@@ -6337,23 +6337,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dean\\.nuget\\packages\\": {},
+    "C:\\Users\\deaharri\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dean\\Documents\\Visual Studio 2017\\Projects\\Quote-master\\Quote\\Quote\\Quote.csproj",
+      "projectUniqueName": "C:\\Users\\deaharri\\source\\repos\\Quote\\Quote\\Quote.csproj",
       "projectName": "Quote",
-      "projectPath": "C:\\Users\\Dean\\Documents\\Visual Studio 2017\\Projects\\Quote-master\\Quote\\Quote\\Quote.csproj",
-      "packagesPath": "C:\\Users\\Dean\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dean\\Documents\\Visual Studio 2017\\Projects\\Quote-master\\Quote\\Quote\\obj\\",
+      "projectPath": "C:\\Users\\deaharri\\source\\repos\\Quote\\Quote\\Quote.csproj",
+      "packagesPath": "C:\\Users\\deaharri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\deaharri\\source\\repos\\Quote\\Quote\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Dean\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\deaharri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

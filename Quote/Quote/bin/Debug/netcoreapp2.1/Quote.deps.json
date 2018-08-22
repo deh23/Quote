@@ -12,7 +12,13 @@
           "AWSSDK.S3": "3.3.20.2",
           "Moq": "4.9.0",
           "Newtonsoft.Json": "11.0.2",
-          "StackExchange.Redis": "1.2.6"
+          "StackExchange.Redis": "1.2.6",
+          "IronBridge.Data.Contract": "1.0.0.0",
+          "IronBridge.Data.Operation.Generic": "1.0.0.0",
+          "IronBridge.Data.Repository": "1.0.0.0",
+          "NuGet.Configuration": "4.6.2.0",
+          "Prism.Event": "1.0.0.0",
+          "System.DirectoryServices": "2.0.0.0"
         },
         "runtime": {
           "Quote.dll": {}
@@ -1104,6 +1110,101 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
+      },
+      "IronBridge.Data.Contract/1.0.0.0": {
+        "runtime": {
+          "IronBridge.Data.Contract.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "IronBridge.Data.Operation.Generic/1.0.0.0": {
+        "runtime": {
+          "IronBridge.Data.Operation.Generic.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "IronBridge.Data.Repository/1.0.0.0": {
+        "runtime": {
+          "IronBridge.Data.Repository.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NuGet.Configuration/4.6.2.0": {
+        "runtime": {
+          "NuGet.Configuration.dll": {
+            "assemblyVersion": "4.6.2.0",
+            "fileVersion": "4.6.2.5055"
+          }
+        }
+      },
+      "Prism.Event/1.0.0.0": {
+        "runtime": {
+          "Prism.Event.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "System.DirectoryServices/2.0.0.0": {
+        "runtime": {
+          "System.DirectoryServices.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.50727.5483"
+          }
+        },
+        "resources": {
+          "fr/System.DirectoryServices.resources.dll": {
+            "locale": "fr"
+          },
+          "he/System.DirectoryServices.resources.dll": {
+            "locale": "he"
+          },
+          "it/System.DirectoryServices.resources.dll": {
+            "locale": "it"
+          },
+          "JA/System.DirectoryServices.resources.dll": {
+            "locale": "JA"
+          },
+          "ko/System.DirectoryServices.resources.dll": {
+            "locale": "ko"
+          },
+          "zh-CHS/System.DirectoryServices.resources.dll": {
+            "locale": "zh-CHS"
+          },
+          "zh-CHT/System.DirectoryServices.resources.dll": {
+            "locale": "zh-CHT"
+          }
+        }
+      },
+      "IronBridge.Data.Entity/1.0.0.0": {
+        "runtime": {
+          "IronBridge.Data.Entity.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "IronBridge.Data.Operation.Contract/1.0.0.0": {
+        "runtime": {
+          "IronBridge.Data.Operation.Contract.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "NuGet.Common/4.6.2.0": {
+        "runtime": {
+          "NuGet.Common.dll": {
+            "assemblyVersion": "4.6.2.0",
+            "fileVersion": "4.6.2.5055"
+          }
+        }
       }
     }
   },
@@ -1777,6 +1878,51 @@
       "sha512": "sha512-lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
+    },
+    "IronBridge.Data.Contract/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IronBridge.Data.Operation.Generic/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IronBridge.Data.Repository/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NuGet.Configuration/4.6.2.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Prism.Event/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.DirectoryServices/2.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IronBridge.Data.Entity/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IronBridge.Data.Operation.Contract/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NuGet.Common/4.6.2.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

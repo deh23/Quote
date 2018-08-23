@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "AWSSDK.Core/3.3.24.6": {
+      "AWSSDK.Core/3.3.24.8": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
@@ -28,6 +28,18 @@
         },
         "runtime": {
           "lib/netstandard1.3/AWSSDK.DynamoDBv2.dll": {}
+        }
+      },
+      "AWSSDK.Lambda/3.3.15.5": {
+        "type": "package",
+        "dependencies": {
+          "AWSSDK.Core": "[3.3.24.8, 3.4.0)"
+        },
+        "compile": {
+          "lib/netstandard1.3/AWSSDK.Lambda.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/AWSSDK.Lambda.dll": {}
         }
       },
       "AWSSDK.S3/3.3.20.2": {
@@ -1838,12 +1850,13 @@
     }
   },
   "libraries": {
-    "AWSSDK.Core/3.3.24.6": {
-      "sha512": "fSMqDdU+0HeMYnjpYOT3IFO8LXRLhydT0/Qm0iof31M6dW8JNduyBcQB+2tlMsKujpfBcS4BnYt2uoroVgyf5A==",
+    "AWSSDK.Core/3.3.24.8": {
+      "sha512": "9skBaUTuglb/Wc8XJU1CxFQFT2edPxE2Hn11lkkFNstmc2S1chlCLFVFGMfsanZXnlEMFEsSygu55Jgwi4mWAA==",
       "type": "package",
-      "path": "awssdk.core/3.3.24.6",
+      "path": "awssdk.core/3.3.24.8",
       "files": [
-        "awssdk.core.3.3.24.6.nupkg.sha512",
+        ".signature.p7s",
+        "awssdk.core.3.3.24.8.nupkg.sha512",
         "awssdk.core.nuspec",
         "lib/MonoAndroid10/AWSSDK.Core.XML",
         "lib/MonoAndroid10/AWSSDK.Core.dll",
@@ -1911,6 +1924,41 @@
         "lib/uap/AWSSDK.DynamoDBv2.XML",
         "lib/uap/AWSSDK.DynamoDBv2.dll",
         "lib/uap/AWSSDK.DynamoDBv2.pdb",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
+    "AWSSDK.Lambda/3.3.15.5": {
+      "sha512": "MX02oXvOA7oGXmisbKHc+HlGywfyYcXxd8F/e74fjClO6oeuwGPVGCmNYRs1gWcpBVeUHlYZK8tEv1LoT9RZmw==",
+      "type": "package",
+      "path": "awssdk.lambda/3.3.15.5",
+      "files": [
+        ".signature.p7s",
+        "analyzers/dotnet/cs/AWSSDK.Lambda.CodeAnalysis.dll",
+        "awssdk.lambda.3.3.15.5.nupkg.sha512",
+        "awssdk.lambda.nuspec",
+        "lib/MonoAndroid10/AWSSDK.Lambda.XML",
+        "lib/MonoAndroid10/AWSSDK.Lambda.dll",
+        "lib/MonoTouch10/AWSSDK.Lambda.XML",
+        "lib/MonoTouch10/AWSSDK.Lambda.dll",
+        "lib/MonoTouch10/AWSSDK.Lambda.pdb",
+        "lib/Xamarin.iOS10/AWSSDK.Lambda.XML",
+        "lib/Xamarin.iOS10/AWSSDK.Lambda.dll",
+        "lib/net35/AWSSDK.Lambda.dll",
+        "lib/net35/AWSSDK.Lambda.pdb",
+        "lib/net35/AWSSDK.Lambda.xml",
+        "lib/net45/AWSSDK.Lambda.dll",
+        "lib/net45/AWSSDK.Lambda.pdb",
+        "lib/net45/AWSSDK.Lambda.xml",
+        "lib/netstandard1.3/AWSSDK.Lambda.dll",
+        "lib/netstandard1.3/AWSSDK.Lambda.pdb",
+        "lib/netstandard1.3/AWSSDK.Lambda.xml",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.Lambda.XML",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.Lambda.dll",
+        "lib/portable-net45+win8+wpa81+wp8/AWSSDK.Lambda.pdb",
+        "lib/uap/AWSSDK.Lambda.XML",
+        "lib/uap/AWSSDK.Lambda.dll",
+        "lib/uap/AWSSDK.Lambda.pdb",
         "tools/install.ps1",
         "tools/uninstall.ps1"
       ]
@@ -6329,6 +6377,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "AWSSDK.DynamoDBv2 >= 3.3.12",
+      "AWSSDK.Lambda >= 3.3.15.5",
       "AWSSDK.S3 >= 3.3.20.2",
       "Microsoft.NETCore.App >= 2.1.0",
       "Moq >= 4.9.0",
@@ -6380,6 +6429,10 @@
           "AWSSDK.DynamoDBv2": {
             "target": "Package",
             "version": "[3.3.12, )"
+          },
+          "AWSSDK.Lambda": {
+            "target": "Package",
+            "version": "[3.3.15.5, )"
           },
           "AWSSDK.S3": {
             "target": "Package",

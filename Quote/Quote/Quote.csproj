@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.12" />
+    <PackageReference Include="AWSSDK.Lambda" Version="3.3.15.5" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.20.2" />
     <PackageReference Include="Moq" Version="4.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -23,6 +24,9 @@
     </Reference>
     <Reference Include="IronBridge.Data.Repository">
       <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\IronBridge.Data.Dynamodb\bin\Debug\netcoreapp2.1\IronBridge.Data.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="IronBridge.DataApi.FunctionTest">
+      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\IronBridge.DataApi.FunctionTest\bin\Debug\netcoreapp2.1\IronBridge.DataApi.FunctionTest.dll</HintPath>
     </Reference>
     <Reference Include="NuGet.Configuration">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\2.1.104\NuGet.Configuration.dll</HintPath>

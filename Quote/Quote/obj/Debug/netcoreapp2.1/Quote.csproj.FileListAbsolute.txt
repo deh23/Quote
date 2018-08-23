@@ -43,3 +43,7 @@ C:\Users\Dean\Documents\Visual Studio 2017\Projects\Quote-master\Quote\Quote\obj
 C:\Users\Dean\Documents\Visual Studio 2017\Projects\Quote-master\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.pdb
 C:\Users\Dean\Documents\Visual Studio 2017\Projects\Quote-master\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.csprojAssemblyReference.cache
 C:\Users\deaharri\source\repos\Quote\Quote\obj\Debug\netcoreapp2.1\Quote.csprojAssemblyReference.cache
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\IronBridge.DataApi.FunctionTest.dll
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\IronBridge.DataApi2.dll
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\IronBridge.DataApi.FunctionTest.pdb
+C:\Users\deaharri\source\repos\Quote\Quote\bin\Debug\netcoreapp2.1\IronBridge.DataApi2.pdb

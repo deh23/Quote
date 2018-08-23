@@ -1,0 +1,32 @@
+﻿{
+  "resource":"/search/{key}/{page_number}/{page_size}/{fixspell}",
+  "httpMethod":"GET",
+  "headers":null,
+  "queryStringParameters":null,
+  "pathParameters":{"page_number":"1","fixspell":"fix","page_size":"10"},
+  "stageVariables":null,
+  "requestContext":{
+      "path":"/search/{key}/{page_number}/{page_size}/{fixspell}",
+      "accountId":"AAAAAAAAAAAA",
+      "resourceId":"upcopu",
+      "stage":"test-invoke-stage",
+      "requestId":"test-invoke-api-id",
+      "identity":{
+          "cognitoIdentityPoolId":null,
+          "cognitoIdentityId":null,
+          "apiKey":"test-invoke-api-key",
+          "cognitoAuthenticationType":null,
+          "userArn":"arn:aws:iam::AAAAAAAAAAAA:root",
+          "apiKeyId":"test-invoke-api-key-id",
+          "userAgent":"Apache-HttpClient/4.5.x (Java/1.8.0_102)",
+          "accountId":"AAAAAAAAAAAA",
+          "sourceIp":"test-invoke-source-ip",
+          "cognitoAuthenticationProvider":null,
+          "user":"AAAAAAAAAAAA"
+      },
+      "resourcePath":"/search/{key}/{page_number}/{page_size}/{fixspell}",
+      "httpMethod": "GET",
+      "apiId": "test-invoke-api-key-id"
+  },
+  "body": null
+}

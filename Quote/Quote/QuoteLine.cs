@@ -59,6 +59,15 @@ namespace Quote
             return JsonConvert.DeserializeObject<List<Product>>(value);
         }
     }
+    public class Search
+    {
+        public string DimensionsUnit_S { get; set; }
+        public string Name_S { get; set; }
+        public string category { get; set; }
+        public string content { get; set; }
+        public string link { get; set; }
+        public string summary { get; set; }
+    }
     public class Product
     {
         public string Name { get; set; }

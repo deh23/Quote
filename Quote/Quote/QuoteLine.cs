@@ -8,9 +8,24 @@ namespace Quote
 {
     public class QuoteLine
     {
+        public QuoteLine()
+        {
+            Product = new List<Product>();
+        }
+        public QuoteLine(List<Product> Product,StatusEnum status)
+        {
+            this.Product = Product;
+            this.CompanyType = status;
+        }
+        public QuoteLine(Product Product, StatusEnum status)
+        {
+            Product = new List<Product>();
+            this.Product.Add(Product);
+            this.CompanyType = status;
+        }
         public JObject Header { get; set; }
         public JObject Manufactuerer { get; set; }
-        public Product Product { get; set; }
+        public List<Product> Product { get; set; }
         public JObject asset { get; set; }
         public string AssetNumber { get; set; }
         public string SerialNumber { get; set; }
@@ -90,5 +105,11 @@ namespace Quote
         public JArray Options { get; set; }
         public JObject SubProducts { get; set; }
         public JObject ServiceActivities { get; set; }
+
+        public static void DynamoLogic()
+        {
+            Console.Out.Write("sOME lOGIC");
+            //    dynamo.Save("company", JObject.FromObject(conflictLines));
+        }
     }
 }

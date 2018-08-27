@@ -154,7 +154,7 @@ namespace Quote
             IPersistentStorage dynamo = new DynamoPersistentStorage(config);
 
 
-            List<Search> conflictLines = new List<Search>();
+            List<Product> conflictLines = new List<Product>();
             Product quoteMatch = new Product();
             List<QuoteLine> quoteLine = new List<QuoteLine>();
             List<QuoteLines> quoteLines = new List<QuoteLines>();
@@ -192,13 +192,13 @@ namespace Quote
                         {
                             // responseString = await client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8/data/product/az8xk2ar");
                             template_name = Path.Combine(Environment.CurrentDirectory, "WhooshRequestTemplate.json");
-                           
+
                             fileData = File.ReadAllText(template_name);
                             JObject payload = JObject.Parse(fileData);
                             payload.Add("path", $"/search/{rows}/1/10/fix");
                             JObject pathParams = (JObject)payload["pathParameters"];
                             pathParams.Add("key", rows);
-                   
+
                             response = lambda.Invoke("PY-v8", payload.ToString());
 
                             using (StreamReader reader = new StreamReader(response.Payload))
@@ -207,7 +207,7 @@ namespace Quote
                                 result = JObject.Parse(content);
                                 body = result.GetValue("body");
                             }
-                          //  responseString = await client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8/data/product/search/" + rows);
+                            //  responseString = await client.GetStringAsync("https://hpjei901q9.execute-api.eu-west-2.amazonaws.com/v8/data/product/search/" + rows);
                         }
                         catch (WebException)
                         {
@@ -221,47 +221,32 @@ namespace Quote
 
                         //do not push each update to dynamo
                         //do it in batches of 100.
-                        responseString = "";
-                            if (!JObject.Parse(body.ToString()).TryGetValue("Result", out JToken parsedResults))
+
+                        QuoteLine qtLine;
+                        if (!JObject.Parse(body.ToString()).TryGetValue("Result", out JToken parsedResults))
                         {
-
-                            quoteMatch = quoteHelper.DeserialiseJson<Product>(responseString.ToString());
-
-                            quoteLine.Add(new QuoteLine
-                            {
-                                Product = quoteMatch,
-                                CompanyType = QuoteLine.StatusEnum.Match
-                            }
-
-                      );
+                            quoteMatch = quoteHelper.DeserialiseJson<Product>(parsedResults.ToString());
+                            qtLine = new QuoteLine(quoteMatch, QuoteLine.StatusEnum.Match);
 
                             //  dynamo.Save("company", JObject.FromObject(quoteMatch));
-
-                            continue;
                         }
-                        JObject test = JObject.Parse(parsedResults.ToString());
-                        conflictLines = JsonConvert.DeserializeObject<List<Search>>(parsedResults.ToString());
-                        quoteLines.Add(new QuoteLines
+                        else
                         {
-                            //category
-                            //Product = "",
-                            //Name_S
-                            CompanyType = QuoteLines.StatusEnum.Conflict
-                        });
-                    //    dynamo.Save("company", JObject.FromObject(conflictLines));
+                            JObject test = JObject.Parse(parsedResults.ToString());
+                            conflictLines = JsonConvert.DeserializeObject<List<Product>>(parsedResults.ToString());
 
-
+                            qtLine = new QuoteLine(conflictLines, QuoteLine.StatusEnum.Match);
+                        }
+                        var ndl = new DynamoList<Product>();
+                        var newp = new Product();
+                        ndl.Add(newp, Product.DynamoLogic);
+                        quoteLine.Add(qtLine);
                         //SEND AN UPDATE TO THE QUOTE HEADER WITH A PERCENTAGE OF HOW MUCH IS DONE.
                     }
                     //return Ok();
 
                 }
             }
-            string hello = "";
-        }
-        public string config()
-        {
-            return "";
         }
     }
 }

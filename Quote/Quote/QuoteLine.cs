@@ -10,23 +10,26 @@ namespace Quote
     {
         public QuoteLine()
         {
-            Product = new List<Product>();
+            Search = new List<Search>();
         }
-        public QuoteLine(List<Product> Product,StatusEnum status)
+        public QuoteLine(List<Search> Search, StatusEnum status)
         {
-            this.Product = Product;
+            this.Search = Search;
             this.CompanyType = status;
         }
-        public QuoteLine(Product Product, StatusEnum status)
+        public QuoteLine(Search Product, StatusEnum status)
         {
-            Product = new List<Product>();
-            this.Product.Add(Product);
+             this.Search = Search;
+          //  this.Search.Add(Search);
+          //  this.Product = Product;
+           // this.Search.Add(Search);
             this.CompanyType = status;
         }
-        public JObject Header { get; set; }
-        public JObject Manufactuerer { get; set; }
-        public List<Product> Product { get; set; }
-        public JObject asset { get; set; }
+        public string Header { get; set; }
+        public string Manufactuerer { get; set; }
+        public string Product { get; set; }
+        public List<Search> Search { get; set; }
+        public string asset { get; set; }
         public string AssetNumber { get; set; }
         public string SerialNumber { get; set; }
         public int Quantity { get; set; }
@@ -40,7 +43,11 @@ namespace Quote
             Conflict
         }
 
-
+        public static void DynamoLogic()
+        {
+            Console.Out.Write("sOME lOGIC");
+         //       dynamo.Save(item.Search["category"], JObject.FromObject(item));
+        }
     }
     public class QuoteLines
     {
@@ -60,23 +67,21 @@ namespace Quote
             Match,
             Conflict
         }
-
-
     }
     public class QuoteHelper
     {
-        public Product DeserialiseJson<T>(string value)
+        public Search DeserialiseJson<T>(string value)
         {
-            return JsonConvert.DeserializeObject<Product>(value);
+            return JsonConvert.DeserializeObject<Search>(value);
         }
-        public List<Product> DeserialiseJsonList<T>(string value)
+        public List<Search> DeserialiseJsonList<T>(string value)
         {
-            return JsonConvert.DeserializeObject<List<Product>>(value);
+            return JsonConvert.DeserializeObject<List<Search>>(value);
         }
     }
     public class Search
     {
-        public string DimensionsUnit_S { get; set; }
+     //   public string DimensionsUnit_S { get; set; }
         public string Name_S { get; set; }
         public string category { get; set; }
         public string content { get; set; }
@@ -106,10 +111,6 @@ namespace Quote
         public JObject SubProducts { get; set; }
         public JObject ServiceActivities { get; set; }
 
-        public static void DynamoLogic()
-        {
-            Console.Out.Write("sOME lOGIC");
-            //    dynamo.Save("company", JObject.FromObject(conflictLines));
-        }
+
     }
 }

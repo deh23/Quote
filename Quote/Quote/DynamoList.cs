@@ -7,11 +7,11 @@ namespace Quote
 {
   public  class DynamoList<T> : List<T>
     {
-        public int lastUploadCount { get; set; }
+        public int LastUploadCount { get; set; }
         public delegate void DynamoPosting();
 
         public void Add(T item, DynamoPosting callback) {
-            if(Count > 100)
+           if(Count > 100)
             {
                 callback.Invoke();
             }

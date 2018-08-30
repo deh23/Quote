@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,6 +13,8 @@ using Amazon.Lambda;
 using Amazon;
 using Amazon.Lambda.Model;
 using Prism.Events;
+using System.Linq;
+using System;
 
 namespace Quote
 {
@@ -27,32 +28,6 @@ namespace Quote
         {
             Program test = new Program();
             test.DeansTest().Wait();
-        }
-
-        public InvokeResponse Invoke(string functionName,string path, string data)
-        {
-            JObject pathParams;
-           var template_name = Path.Combine(System.Environment.CurrentDirectory, "WhooshRequestTemplate.json");
-            
-          var  fileData = File.ReadAllText(template_name);
-            JObject payLoad = JObject.Parse(fileData);
-            payLoad.Add("path", path);
-            pathParams = (JObject)payLoad["pathParameters"];
-            pathParams.Add("key", data);
-
-            var region_name = config.AwsRegionName;
-            var env_id = "v8";
-            // var env_id = config.AwsNamespace;
-
-            AmazonLambdaClient client = new AmazonLambdaClient(RegionEndpoint.GetBySystemName(region_name));
-            InvokeRequest request = new InvokeRequest()
-            {
-                FunctionName = $"PY-{env_id}",
-                Payload = payLoad.ToString(),
-            };
-
-            var response = client.InvokeAsync(request).Result;
-            return response;
         }
         public async Task DeansTest()
         {
@@ -178,23 +153,65 @@ namespace Quote
 }";
             await FileParser(jsonTest, "3ha5f49s");
         }
+        public InvokeResponse Invoke(string functionName, string path, string data)
+        {
+            JObject pathParams;
+            var template_name = Path.Combine(System.Environment.CurrentDirectory, "WhooshRequestTemplate.json");
+
+            var fileData = File.ReadAllText(template_name);
+            JObject payLoad = JObject.Parse(fileData);
+            payLoad.Add("path", path);
+            pathParams = (JObject)payLoad["pathParameters"];
+            pathParams.Add("key", data);
+
+            var region_name = config.AwsRegionName;
+            var env_id = "v8";
+            // var env_id = config.AwsNamespace;
+
+            AmazonLambdaClient client = new AmazonLambdaClient(RegionEndpoint.GetBySystemName(region_name));
+            InvokeRequest request = new InvokeRequest()
+            {
+                FunctionName = $"PY-{env_id}",
+                Payload = payLoad.ToString(),
+            };
+
+            var response = client.InvokeAsync(request).GetAwaiter().GetResult();
+            return response;
+        }
+
+        //SAVE TO DYANMO
+        public async Task<string> ResultFinder(string rows)
+        {
+            var response = Invoke("v8", $"/search/category:company OR category:asset OR category:product AND {rows}/1/10/fix", rows);
+            using (StreamReader reader = new StreamReader(response.Payload))
+            {
+               string  content = reader.ReadToEnd();
+                return content;
+            }
+        }
+
+        public async Task<IEnumerable<string>> SearchData(IEnumerable<string> rows)
+        {
+            var result = new List<string>();
+
+            foreach(var row in rows)
+            {
+                result.Add(await ResultFinder(row));
+            }
+
+            return result;
+        }
+
         public async Task FileParser(string excelJson, string s3ID)
         {
             List<Search> searchResult = new List<Search>();
             List<QuoteLine> quoteLine = new List<QuoteLine>();
             FieldNames quoting = new FieldNames();
-            JToken body;
-            JToken s3Body;
-            JObject result;
+            JToken body = null;
             QuoteLine qtLine;
-            JObject pathParams;
-            string template_name;
-            string fileData;
+            List<string> list = new List<string>();
 
             quoting = JsonConvert.DeserializeObject<FieldNames>(excelJson);
-            //  client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("x-session-id", "EASY-REMB");
-            client.DefaultRequestHeaders.Add("x-session-id", "password");
-            // client.DefaultRequestHeaders.Add("Content-Type", "application/json");
 
             foreach (var sheet in quoting.Result[0].worksheets)
             {
@@ -203,84 +220,97 @@ namespace Quote
                 {
                     foreach (var rows in columns.rows)
                     {
+                        list.Add(rows);
+                        // Task.Run( () => task.Add(ResultFinder(rows).ToString()));
 
-                        var response = Invoke("v8", $"/search/{rows}/1/10/fix", rows);
-
-                        using (StreamReader reader = new StreamReader(response.Payload))
-                        {
-                            var content = reader.ReadToEnd();
-                            result = JObject.Parse(content);
-                            body = result.GetValue("body");
-                        }
-                        //do not push each update to dynamo
-                        //do it in batches of 100.
-                        var s3Response = Invoke("v8", $"/data/s3attachment/{s3ID}/1/10/fix", s3ID);
-
-                        using (StreamReader reader = new StreamReader(s3Response.Payload))
-                        {
-                            var content = reader.ReadToEnd();
-                            result = JObject.Parse(content);
-                            s3Body = result.GetValue("body");
-                        }
-                        //NestedToFlatStorage storage = new NestedToFlatStorage();
-                        //storage.GetById("");
-                      //  dataOperation.GetById("s3attachement", "3ha5f49s");
-                        if (JObject.Parse(s3Body.ToString()).TryGetValue("Result", out JToken s3ParsedResults))
-                        {
-                            string testetesg = "";
-                        }
-
-
-
-                        if (JObject.Parse(body.ToString()).TryGetValue("Result", out JToken parsedResults))
-                        {
-                            searchResult = JsonConvert.DeserializeObject<List<Search>>(parsedResults.ToString());
-                            if (searchResult.Count == 1)
-                            {
-                                qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Match)
-                                {
-                                    Header = "45cxbcaw",
-                                    Product = "4wchgrae",
-                                    Manufactuerer = "35t93uq5"
-                                };
-                            }
-                            else if (searchResult.Count > 1)
-                            {
-                                qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Conflict)
-                                {
-                                    Header = "45cxbcaw",
-                                    Product = "4wchgrae",
-                                    Manufactuerer = "35t93uq5"
-                                };
-                            }
-                            else
-                            {
-                                qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Ignore)
-                                {
-                                    Header = "45cxbcaw",
-                                    Product = "4wchgrae",
-                                    Manufactuerer = "35t93uq5"
-                                };
-                            }
-                            quoteLine.Add(qtLine);
-                        }
-                        string CheckQuoteLine = "";
-
-                        //}
-                        //    var ndl = new DynamoList<QuoteLine>();
-                        //   var newp = new Product();
-                        //    ndl.Add(qtLine, QuoteLine.DynamoLogic);
-                        //     quoteLine.Add(qtLine);
-                        //   dynamo.Save("quoteline", JObject.FromObject(qtLine));
-                        //SEND AN UPDATE TO THE QUOTE HEADER WITH A PERCENTAGE OF HOW MUCH IS DONE.
                     }
-                    //return Ok();
+                }
+                //}
+                //    var ndl = new DynamoList<QuoteLine>();
+                //   var newp = new Product();
+                //    ndl.Add(qtLine, QuoteLine.DynamoLogic);
+                //     quoteLine.Add(qtLine);
+                //   dynamo.Save("quoteline", JObject.FromObject(qtLine));
+                //SEND AN UPDATE TO THE QUOTE HEADER WITH A PERCENTAGE OF HOW MUCH IS DONE.
+            }
+            List<Task> values = new List<Task>();
+
+            var thread_count = 10;
+            var page_size = list.Count / thread_count;
+            var final = new List<string>();
+
+            for(int i =0;i<thread_count;i++)
+            {
+                var to_be_processed = list.Skip(i * page_size).Take(page_size);
+
+                var t = Task.Factory.StartNew(async () =>
+                {
+                    final.AddRange(await SearchData(to_be_processed));
+                });
+            }
+
+            foreach (var l in list)
+            {
+             values.Add(ResultFinder(l));
+            }
+            //Task.Factory.StartNew(async () =>
+            // {
+            //     foreach (var l in list)
+            //     {
+            //      values.Add(ResultFinder(l));
+            //     }
+
+            // });
+            Task.WaitAll(values.ToArray());
+            //   task.Wait();
+            foreach (var t in values)
+            {
+                var content = JObject.Parse(t.ToString());
+                body = content.GetValue("body");
+
+                if (JObject.Parse(body.ToString()).TryGetValue("Result", out JToken parsedResults))
+                {
+                    searchResult = JsonConvert.DeserializeObject<List<Search>>(parsedResults.ToString());
+
+                    if (searchResult.Count == 1)
+                    {
+                        qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Match)
+                        {
+                            Header = "45cxbcaw",
+                            Product = "4wchgrae",
+                            Manufactuerer = "35t93uq5"
+                        };
+                    }
+                    else if (searchResult.Count > 1)
+                    {
+                        qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Conflict)
+                        {
+                            Header = "45cxbcaw",
+                            Product = "4wchgrae",
+                            Manufactuerer = "35t93uq5"
+                        };
+                    }
+                    else
+                    {
+                        qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Ignore)
+                        {
+                            Header = "45cxbcaw",
+                            Product = "4wchgrae",
+                            Manufactuerer = "35t93uq5"
+                        };
+                    }
+                    quoteLine.Add(qtLine);
+                    //  }
 
                 }
             }
-            string testHowManyQuoteLinesExist = "";
+            //return Ok();
+            // Task.WaitAll();
+            //    foreach (var r in result)
+            //     {
+
+            string test = "";
+
         }
     }
-
-
 }

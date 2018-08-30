@@ -17,22 +17,22 @@
 
   <ItemGroup>
     <Reference Include="IronBridge.Data.Contract">
-      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\IronBridge.Data.Contract\bin\Debug\netcoreapp2.1\IronBridge.Data.Contract.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.V8\data\IronBridge.Data\IronBridge.Data.Dynamodb\bin\Debug\netcoreapp2.1\IronBridge.Data.Contract.dll</HintPath>
     </Reference>
     <Reference Include="IronBridge.Data.Operation.Generic">
-      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\IronBridge.Data.Operation.Generic\bin\Debug\netcoreapp2.1\IronBridge.Data.Operation.Generic.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.V8\data\IronBridge.Data\IronBridge.Data.Operation.Generic\bin\Debug\netcoreapp2.1\IronBridge.Data.Operation.Generic.dll</HintPath>
     </Reference>
     <Reference Include="IronBridge.Data.Repository">
-      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\IronBridge.Data.Dynamodb\bin\Debug\netcoreapp2.1\IronBridge.Data.Repository.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.V8\data\IronBridge.Data\IronBridge.Data.Dynamodb\bin\Debug\netcoreapp2.1\IronBridge.Data.Repository.dll</HintPath>
     </Reference>
     <Reference Include="IronBridge.DataApi.FunctionTest">
-      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\IronBridge.DataApi.FunctionTest\bin\Debug\netcoreapp2.1\IronBridge.DataApi.FunctionTest.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.V8\data\IronBridge.Data\IronBridge.DataApi.FunctionTest\bin\Debug\netcoreapp2.1\IronBridge.DataApi.FunctionTest.dll</HintPath>
     </Reference>
     <Reference Include="NuGet.Configuration">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\2.1.104\NuGet.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Prism.Event">
-      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.Clean\data\IronBridge.Data\Prism.Event\bin\Debug\netcoreapp2.1\Prism.Event.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\GIT\Ironbridge.V8\data\IronBridge.Data\IronBridge.DataApi.FunctionTest\bin\Debug\netcoreapp2.1\Prism.Event.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration">
       <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework64\v2.0.50727\System.configuration.dll</HintPath>

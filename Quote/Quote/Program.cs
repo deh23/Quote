@@ -182,10 +182,10 @@ namespace Quote
         //SAVE TO DYANMO
         public async Task<string> ResultFinder(string rows)
         {
-            var response = Invoke("v8", $"/search/category:company OR category:asset OR category:product AND {rows}/1/10/fix", rows);
+            var response = Invoke("v8", $"/search/category:company OR category:asset OR category:product AND {rows}/1/10/", rows);
             using (StreamReader reader = new StreamReader(response.Payload))
             {
-               string  content = reader.ReadToEnd();
+                string content = await reader.ReadToEndAsync();
                 return content;
             }
         }
@@ -194,7 +194,7 @@ namespace Quote
         {
             var result = new List<string>();
 
-            foreach(var row in rows)
+            foreach (var row in rows)
             {
                 result.Add(await ResultFinder(row));
             }
@@ -236,34 +236,37 @@ namespace Quote
             List<Task> values = new List<Task>();
 
             var thread_count = 10;
-            var page_size = list.Count / thread_count;
+            int page_size = list.Count / thread_count;
+            if (page_size > 99)
+            {
+                page_size = 100;
+            }
             var final = new List<string>();
-
-            for(int i =0;i<thread_count;i++)
+            List<string> test = new List<string>();
+            var data = new List<Task>();
+            for (int i = 0; i < thread_count + 1; i++)
             {
                 var to_be_processed = list.Skip(i * page_size).Take(page_size);
 
-                var t = Task.Factory.StartNew(async () =>
-                {
-                    final.AddRange(await SearchData(to_be_processed));
-                });
+                var task = Task.Factory.StartNew(async () =>
+                 {
+                     final.AddRange(await SearchData(to_be_processed));
+
+                     test.AddRange(to_be_processed);
+                 });
+                data.Add(task);
             }
 
-            foreach (var l in list)
-            {
-             values.Add(ResultFinder(l));
-            }
-            //Task.Factory.StartNew(async () =>
-            // {
-            //     foreach (var l in list)
-            //     {
-            //      values.Add(ResultFinder(l));
-            //     }
+            //foreach (var l in list)
+            //{
+            // values.Add(ResultFinder(l));
+            //}
+            //  Task.WaitAll(values.ToArray());
+            // Task.WaitAll(final);
+            await Task.WhenAll(data);
 
-            // });
-            Task.WaitAll(values.ToArray());
-            //   task.Wait();
-            foreach (var t in values)
+            //   await Task.WhenAll(task); // task.Wait();
+            foreach (var t in final)
             {
                 var content = JObject.Parse(t.ToString());
                 body = content.GetValue("body");
@@ -309,7 +312,7 @@ namespace Quote
             //    foreach (var r in result)
             //     {
 
-            string test = "";
+            string tests = "";
 
         }
     }

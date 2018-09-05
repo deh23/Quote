@@ -151,13 +151,53 @@ namespace Quote
     }
   ]
 }";
-            await FileParser(jsonTest, "3ha5f49s");
+            string mapping = @"
+{
+    ""ImportSheet"": ""sheet1"",
+    ""StartingCell"": ""2"",
+    ""Mapping"": [
+        {
+            ""Column"": ""A"",
+            ""Map"": ""manufacturer""
+        },
+        {
+            ""Column"": ""B"",
+            ""Map"": ""product""
+        },
+        {
+            ""Column"": ""C"",
+            ""Map"": ""na""
+        },
+        {
+            ""Column"": ""D"",
+            ""Map"": ""na""
+        },
+        {
+            ""Column"": ""E"",
+            ""Map"": ""na""
+        },
+        {
+            ""Column"": ""F"",
+            ""Map"": ""na""
+        },
+        {
+            ""Column"": ""G"",
+            ""Map"": ""na""
+        }
+    ],
+    ""MimeType"": ""application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"",
+    ""EntityId"": ""r76gaef3"",
+    ""BucketName"": ""com.keysight.ironbridge"",
+    ""Id"": ""3ha5f49s"",
+    ""EntityType"": ""Quoteheader"",
+    ""Key"": ""Upload_Documents/v8/Quoteheader/test XLS_636698263120970491.xlsx""
+}";
+            await FileParser(jsonTest, "3ha5f49s", mapping);
         }
         public InvokeResponse Invoke(string functionName, string path, string data)
         {
             JObject pathParams;
             var template_name = Path.Combine(System.Environment.CurrentDirectory, "WhooshRequestTemplate.json");
-
             var fileData = File.ReadAllText(template_name);
             JObject payLoad = JObject.Parse(fileData);
             payLoad.Add("path", path);
@@ -182,12 +222,19 @@ namespace Quote
         //SAVE TO DYANMO
         public async Task<string> ResultFinder(string rows)
         {
+            string content;
             var response = Invoke("v8", $"/search/category:company OR category:asset OR category:product AND {rows}/1/10/", rows);
+            // var testResponse = Invoke("v8", $"/search/category:s3attachment AND 3ha5f49s", "3ha5f49s");
             using (StreamReader reader = new StreamReader(response.Payload))
             {
-                string content = await reader.ReadToEndAsync();
+                content = await reader.ReadToEndAsync();
                 return content;
             }
+            //using (StreamReader reader = new StreamReader(testResponse.Payload))
+            //{
+            //    string testContent = await reader.ReadToEndAsync();
+
+            //}return content;
         }
 
         public async Task<IEnumerable<string>> SearchData(IEnumerable<string> rows)
@@ -202,41 +249,44 @@ namespace Quote
             return result;
         }
 
-        public async Task FileParser(string excelJson, string s3ID)
+        public async Task FileParser(string excelJson, string s3ID, string mapping)
         {
             List<Search> searchResult = new List<Search>();
             List<QuoteLine> quoteLine = new List<QuoteLine>();
             FieldNames quoting = new FieldNames();
             JToken body = null;
             QuoteLine qtLine;
-            List<string> list = new List<string>();
+            List<string> jsonRow = new List<string>();
+            var jsonColumn = new List<string>();
+            var testColumn = new List<string>();
+            DataMapping mappingData = new DataMapping();
+            List<Mapped> mapped = new List<Mapped>();
 
             quoting = JsonConvert.DeserializeObject<FieldNames>(excelJson);
-
+            mappingData = JsonConvert.DeserializeObject<DataMapping>(mapping);
             foreach (var sheet in quoting.Result[0].worksheets)
             {
-                //  Console.WriteLine(sheet.name);
                 foreach (var columns in sheet.xlsheet.columns)
                 {
                     foreach (var rows in columns.rows)
                     {
-                        list.Add(rows);
-                        // Task.Run( () => task.Add(ResultFinder(rows).ToString()));
-
+                        //foreach (var map in mappingData.Mapping)
+                        //{
+                        //   if(columns.name == map.Column)
+                        //   {
+                        //        jsonColumn.Add(map.map);
+                        //        testColumn.Add(rows);
+                        //        continue;
+                        //    }
+                        //}
+                        jsonRow.Add(rows);
                     }
                 }
-                //}
-                //    var ndl = new DynamoList<QuoteLine>();
-                //   var newp = new Product();
-                //    ndl.Add(qtLine, QuoteLine.DynamoLogic);
-                //     quoteLine.Add(qtLine);
-                //   dynamo.Save("quoteline", JObject.FromObject(qtLine));
-                //SEND AN UPDATE TO THE QUOTE HEADER WITH A PERCENTAGE OF HOW MUCH IS DONE.
             }
-            List<Task> values = new List<Task>();
+        //    List<Task> values = new List<Task>();
 
             var thread_count = 10;
-            int page_size = list.Count / thread_count;
+            int page_size = jsonRow.Count / thread_count;
             if (page_size > 99)
             {
                 page_size = 100;
@@ -246,7 +296,7 @@ namespace Quote
             var data = new List<Task>();
             for (int i = 0; i < thread_count + 1; i++)
             {
-                var to_be_processed = list.Skip(i * page_size).Take(page_size);
+                var to_be_processed = jsonRow.Skip(i * page_size).Take(page_size);
 
                 var task = Task.Factory.StartNew(async () =>
                  {
@@ -257,15 +307,8 @@ namespace Quote
                 data.Add(task);
             }
 
-            //foreach (var l in list)
-            //{
-            // values.Add(ResultFinder(l));
-            //}
-            //  Task.WaitAll(values.ToArray());
-            // Task.WaitAll(final);
             await Task.WhenAll(data);
 
-            //   await Task.WhenAll(task); // task.Wait();
             foreach (var t in final)
             {
                 var content = JObject.Parse(t.ToString());
@@ -277,12 +320,23 @@ namespace Quote
 
                     if (searchResult.Count == 1)
                     {
-                        qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Match)
+                        qtLine = new QuoteLine(searchResult, QuoteLine.StatusEnum.Match);
+
+                        qtLine.Header = "45cxbcaw";
+
+                        if (searchResult[0].category == "product")
                         {
-                            Header = "45cxbcaw",
-                            Product = "4wchgrae",
-                            Manufactuerer = "35t93uq5"
-                        };
+                            qtLine.Product = searchResult[0].link;
+                        }
+                       
+                        if (searchResult[0].category == "manufacturer")
+                        {
+                            qtLine.Manufactuerer = searchResult[0].link;
+                        }
+                        if (searchResult[0].category == "asset")
+                        {
+                            qtLine.asset = searchResult[0].link;
+                        }
                     }
                     else if (searchResult.Count > 1)
                     {
@@ -307,10 +361,7 @@ namespace Quote
 
                 }
             }
-            //return Ok();
-            // Task.WaitAll();
-            //    foreach (var r in result)
-            //     {
+            //SAVE TO DYANMO 
 
             string tests = "";
 

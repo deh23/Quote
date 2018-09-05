@@ -1,13 +1,56 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Quote
 {
+    public class Mapped
+    {
+        public string Data { get; set; }
+      
+        public string SetColumnName(string val)
+        {
+           // if(val == )
+            return val;
+        }
+        public string columnName 
+          {
+            get
+            {
+                return Data;
+            }
+    set
+            {
+                Data = SetColumnName(value);
+            }
+        }
+    }
+    public class DataMapping //: IEnumerable
+    {
+        public List<string> rows { get; set; }
+        public List<string> columnName { get; set; }
+        public List<Map> Mapping { get; set; }
+        public string StartingCell { get; set; }
+        public string ImportSheet { get; set; }
+
+        //public IEnumerator GetEnumerator()
+        //{
+        //    return ((IEnumerable)Mapping).GetEnumerator();
+        //}
+    }
+
+    public class Map
+    {
+        public string Column { get; set; }
+        public string map { get; set; }
+    }
+
     public class QuoteLine
     {
+
         public QuoteLine()
         {
             Search = new List<Search>();
@@ -19,10 +62,10 @@ namespace Quote
         }
         public QuoteLine(Search Product, StatusEnum status)
         {
-             this.Search = Search;
-          //  this.Search.Add(Search);
-          //  this.Product = Product;
-           // this.Search.Add(Search);
+            this.Search = Search;
+            //  this.Search.Add(Search);
+            //  this.Product = Product;
+            // this.Search.Add(Search);
             this.CompanyType = status;
         }
         public string Header { get; set; }
@@ -46,7 +89,7 @@ namespace Quote
         public static void DynamoLogic()
         {
             Console.Out.Write("sOME lOGIC");
-         //       dynamo.Save(item.Search["category"], JObject.FromObject(item));
+            //       dynamo.Save(item.Search["category"], JObject.FromObject(item));
         }
     }
     public class QuoteLines
@@ -81,7 +124,7 @@ namespace Quote
     }
     public class Search
     {
-     //   public string DimensionsUnit_S { get; set; }
+        //   public string DimensionsUnit_S { get; set; }
         public string Name_S { get; set; }
         public string category { get; set; }
         public string content { get; set; }
